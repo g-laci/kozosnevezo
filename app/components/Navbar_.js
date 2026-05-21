@@ -50,7 +50,7 @@ export default function Navbar_() {
                             </span>
                             </motion.div>
                         </NavbarItem>
-                        <NavbarItem>
+                        {/*<NavbarItem>
                             <motion.div
                                 whileHover={{scale: 1.2}}
                                 whileTap={{scale: 0.8, borderRadius: "100%"}}
@@ -60,7 +60,7 @@ export default function Navbar_() {
                                 Projektek
                             </span>
                             </motion.div>
-                        </NavbarItem>
+                        </NavbarItem>*/}
                     </div>
                     <div className="flex flex-row gap-8">
                         <NavbarItem>

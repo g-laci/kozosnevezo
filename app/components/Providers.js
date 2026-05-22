@@ -1,3 +1,5 @@
+"use client"
+
 import { HeroUIProvider, ToastProvider } from '@heroui/react';
 import {Suspense} from "react";
 

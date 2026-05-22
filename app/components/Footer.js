@@ -47,7 +47,6 @@ export default function Footer() {
         key: "Beszamolo_2023.pdf", label: "Beszámoló 2023",
     },];
 
-
     return (
         <footer className="w-full items-center justify-center h-[70px] sm:h-[40px] ">
         <div className="flex flex-col gap-2 sm:hidden">

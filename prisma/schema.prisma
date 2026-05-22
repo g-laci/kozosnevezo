@@ -23,6 +23,7 @@ model SitePost {
   id      Int      @id @default(autoincrement())
   title   String?
   content String?
+  image   String?
   date    DateTime
 }
 

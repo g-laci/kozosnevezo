@@ -80,7 +80,7 @@ export default function NewsPage() {
         return selectedPostTypes.includes('levelek') && post.title;
     });
 
-    const savePostEvent = async () => {
+    {/*const savePostEvent = async () => {
         await fetch(`/api/posts`, {
             method: 'PUT',
             headers: {
@@ -98,11 +98,11 @@ export default function NewsPage() {
                 }
             })
             .catch(error => console.error('Error creating site post:', error));
-    };
+    };*/}
 
     return (
         <>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center" size="xl" isDismissable={false}>
+        {/*<Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center" size="xl" isDismissable={false}>
                 <ModalContent>
                     {(onClose) => (
                         <>
@@ -132,7 +132,7 @@ export default function NewsPage() {
                         </>
                     )}
                 </ModalContent>
-            </Modal>
+            </Modal>*/}
             <div className='flex flex-col sm:flex-row  w-11/12'>
                 <h1 className="sm:hidden mb-5 title w-full sm:w-2/6 text-center">Hírek</h1>
                 <div className="flex flex-col sm:flex-row w-full sm:w-2/6 mb-3 sm:mb-0">
@@ -166,13 +166,13 @@ export default function NewsPage() {
                             </Checkbox>
                         </CheckboxGroup>
                     </div>
-                    {isLoaded && user && user.publicMetadata.role === "admin" && (
+                    {/*{isLoaded && user && user.publicMetadata.role === "admin" && (
                         <div className="sm:hidden my-3 sm:my-auto h-full flex justify-end">
                             <Button color="primary" radius="full" variant="ghost"
                                     onPress={onOpen} startContent={<BiMailSend size="1.5em"/>}>
                                 <p className='kanit-semibold text-large'>Új hírt közlök</p>
                             </Button>
-                        </div>)}
+                        </div>)}*/}
                 </div>
                 <h1 className="hidden sm:block m-5 title w-2/6 text-center">Hírek</h1>
                 {isLoaded && user && user.publicMetadata.role === "admin" ? (

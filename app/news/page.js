@@ -11,11 +11,13 @@ import {
     Modal, ModalBody,
     ModalContent, ModalFooter, ModalHeader,
     useDisclosure,
-    Input, Textarea, Image
+    Input, Textarea, Image, CardFooter
 } from "@heroui/react";
 import {Skeleton} from "@heroui/skeleton";
 import {BiLogoInstagram, BiLogoTiktok, BiMailSend} from "react-icons/bi";
 import {useUser} from "@clerk/nextjs";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import SitePostModal from "../components/SitePostModal";
 
 export default function NewsPage() {
 
@@ -29,6 +31,20 @@ export default function NewsPage() {
     const [postTitleValue, setPostTitleValue] = useState("");
     const [postContentValue, setPostContentValue] = useState("");
     const {isLoaded, user} = useUser()
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const [selectedPostForModal, setSelectedPostForModal] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openPostModal = (post) => {
+        setSelectedPostForModal(post);
+        setIsModalOpen(true);
+    };
+    const closeSitePostModal = () => {
+        setSelectedPostForModal(null);
+        setIsModalOpen(false);
+    };
 
 
     const fetchPosts = async () => {
@@ -79,6 +95,8 @@ export default function NewsPage() {
         }
         return selectedPostTypes.includes('levelek') && post.title;
     });
+
+    const sitePosts = posts.filter((post) => !post.url && post.title);
 
     {/*const savePostEvent = async () => {
         await fetch(`/api/posts`, {
@@ -204,19 +222,47 @@ export default function NewsPage() {
                                     className="h-[550px] sm:h-[450px]"
                                 />
                             ) : (
-                                <Card className="h-[550px] sm:h-[450px]" style={{border: "3px solid #003399"}}>
-                                    <CardHeader>
-                                        <p className="kanit-semibold text-large">{post.title}</p>
-                                    </CardHeader>
-                                    <CardBody>
-                                        <pre className="kanit-regular text-justify text-wrap">{post.content}</pre>
+                                <Card className="h-[550px] sm:h-[450px] flex flex-col">
+                                    {/* Top half: image area */}
+                                    { post.image ? (
+                                    <CardBody className="p-3 h-1/2 flex items-center justify-center">
+                                            <div className="h-full w-full overflow-hidden rounded-xl sm:h-72">
+                                                <Image src={post.image} alt={post?.title}  className="object-cover"                                    />
+                                            </div>
+                                    </CardBody> ) : <></> }
+
+                                    {/* Bottom half: title + html preview */}
+                                    <CardBody className={post.image ? "h-1/2" : "h-full"}>
+                                        {post.title ? (
+                                            <h3 className="kanit-semibold text-xl mb-2 line-clamp-2">{post.title}</h3>
+                                        ) : null}
+                                        <div
+                                            className="kanit-regular text-md text-justify overflow-hidden line-clamp-[12]"
+                                            dangerouslySetInnerHTML={{ __html: post.content || "" }}
+                                        />
                                     </CardBody>
+
+                                    {/* Bottom-right button */}
+                                    <CardFooter className="pt-0 justify-end">
+                                        <Button
+                                            color="primary"
+                                            radius="full"
+                                            onPress={() => openPostModal(post)}
+                                        >
+                                            Megnyitás
+                                        </Button>
+                                    </CardFooter>
                                 </Card>
                             )}
                         </div>
                     ))
                 )}
             </div>
+            <SitePostModal
+                post={selectedPostForModal}
+                isOpen={isModalOpen}
+                onClose={closeSitePostModal}
+            />
             <div ref={loaderRef} className="h-10"></div>
         </>
     )

@@ -1,17 +1,15 @@
 'use client'
 
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState, useMemo} from "react";
 import {
     Button,
     Card,
     CardBody,
-    CardHeader,
     Checkbox,
     CheckboxGroup,
-    Modal, ModalBody,
-    ModalContent, ModalFooter, ModalHeader,
     useDisclosure,
-    Input, Textarea, Image, CardFooter
+    Image,
+    CardFooter
 } from "@heroui/react";
 import {Skeleton} from "@heroui/skeleton";
 import {BiLogoInstagram, BiLogoTiktok, BiMailSend} from "react-icons/bi";
@@ -20,52 +18,75 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import SitePostModal from "../components/SitePostModal";
 
 export default function NewsPage() {
-
     const [isFeedLoading, setIsFeedLoading] = useState(true);
-    const [posts, setPosts] = useState([])
+    const [posts, setPosts] = useState([]);
     const [visibleCount, setVisibleCount] = useState(12);
     const loaderRef = useRef(null);
     const [selectedPostTypes, setSelectedPostTypes] = useState(["tiktok", "instagram", "levelek"]);
     const [isPostTypeSelectionInvalid, setIsPostTypeSelectionInvalid] = useState(false);
-    const {isOpen, onOpen, onOpenChange} = useDisclosure();
-    const [postTitleValue, setPostTitleValue] = useState("");
-    const [postContentValue, setPostContentValue] = useState("");
-    const {isLoaded, user} = useUser()
+    const {isLoaded, user} = useUser();
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const [selectedPostForModal, setSelectedPostForModal] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const postIdFromUrl = useMemo(() => {
+        const raw = searchParams.get("post");
+        if (!raw) return null;
+        const n = Number(raw);
+        return Number.isInteger(n) ? n : null;
+    }, [searchParams]);
+
     const openPostModal = (post) => {
         setSelectedPostForModal(post);
         setIsModalOpen(true);
+        // /news?post=123
+        router.push(`${pathname}?post=${post.id}`, { scroll: false });
     };
+
     const closeSitePostModal = () => {
         setSelectedPostForModal(null);
         setIsModalOpen(false);
+        // back to /news
+        router.push(pathname, { scroll: false });
     };
 
-
     const fetchPosts = async () => {
-        await fetch('/api/posts', {
-            method: 'GET'
-        })
-            .then(response => response.json())
-            .then(postsLocale => {
-                setPosts(postsLocale)
-                setIsFeedLoading(false)
-            })
-            .catch(error => console.error('Error fetching urls:', error));
-    }
+        try {
+            const response = await fetch('/api/posts', { method: 'GET' });
+            const postsLocale = await response.json();
+            setPosts(postsLocale);
+        } catch (error) {
+            console.error('Error fetching urls:', error);
+        } finally {
+            setIsFeedLoading(false);
+        }
+    };
 
     useEffect(() => {
         fetchPosts();
     }, []);
 
+    // Sync modal state from URL + loaded posts
     useEffect(() => {
-        console.log(postContentValue, postTitleValue)
-    }, [postContentValue, postTitleValue]);
+        if (!posts.length) return;
+
+        if (postIdFromUrl == null) {
+            setIsModalOpen(false);
+            setSelectedPostForModal(null);
+            return;
+        }
+
+        const matched = posts.find((p) => p.id === postIdFromUrl && !p.url); // modal is for SitePost
+        if (matched) {
+            setSelectedPostForModal(matched);
+            setIsModalOpen(true);
+        } else {
+            // invalid post id -> normalize URL
+            router.replace(pathname, { scroll: false });
+        }
+    }, [postIdFromUrl, posts, router, pathname]);
 
     useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
@@ -74,29 +95,17 @@ export default function NewsPage() {
             }
         }, {threshold: 1.0});
 
-        if (loaderRef.current) {
-            observer.observe(loaderRef.current);
-        }
-
+        if (loaderRef.current) observer.observe(loaderRef.current);
         return () => {
-            if (loaderRef.current) {
-                observer.unobserve(loaderRef.current);
-            }
+            if (loaderRef.current) observer.unobserve(loaderRef.current);
         };
     }, []);
 
-
     const filteredUrls = posts.filter(post => {
-        if (selectedPostTypes.includes('tiktok') && post.url?.includes('www.tiktok.com')) {
-            return true;
-        }
-        if (selectedPostTypes.includes('instagram') && post.url?.includes('www.instagram.com')) {
-            return true;
-        }
+        if (selectedPostTypes.includes('tiktok') && post.url?.includes('www.tiktok.com')) return true;
+        if (selectedPostTypes.includes('instagram') && post.url?.includes('www.instagram.com')) return true;
         return selectedPostTypes.includes('levelek') && post.title;
     });
-
-    const sitePosts = posts.filter((post) => !post.url && post.title);
 
     {/*const savePostEvent = async () => {
         await fetch(`/api/posts`, {
@@ -207,7 +216,7 @@ export default function NewsPage() {
                 {isFeedLoading ? (
                     <>
                         {[...Array(12)].map((_, index) => (
-                            <Skeleton key={index} className="">
+                            <Skeleton key={index}>
                                 <div className="h-[550px] sm:h-[450px] rounded-lg bg-default-300"/>
                             </Skeleton>
                         ))}
@@ -216,39 +225,26 @@ export default function NewsPage() {
                     filteredUrls.slice(0, visibleCount).map((post, index) => (
                         <div key={index}>
                             {post.url ? (
-                                <iframe
-                                    width="100%"
-                                    src={post.url}
-                                    className="h-[550px] sm:h-[450px]"
-                                />
+                                <iframe width="100%" src={post.url} className="h-[550px] sm:h-[450px]" />
                             ) : (
                                 <Card className="h-[550px] sm:h-[450px] flex flex-col">
-                                    {/* Top half: image area */}
-                                    { post.image ? (
-                                    <CardBody className="p-3 h-1/2 flex items-center justify-center">
+                                    {post.image ? (
+                                        <CardBody className="p-3 h-1/2 flex items-center justify-center">
                                             <div className="h-full w-full overflow-hidden rounded-xl sm:h-72">
-                                                <Image src={post.image} alt={post?.title}  className="object-cover"                                    />
+                                                <Image src={post.image} alt={post?.title} className="object-cover" />
                                             </div>
-                                    </CardBody> ) : <></> }
+                                        </CardBody>
+                                    ) : null}
 
-                                    {/* Bottom half: title + html preview */}
                                     <CardBody className={post.image ? "h-1/2" : "h-full"}>
                                         {post.title ? (
-                                            <h3 className="kanit-semibold text-xl mb-2 line-clamp-2">{post.title}</h3>
+                                            <h3 className="kanit-semibold text-2xl mb-2 line-clamp-2">{post.title}</h3>
                                         ) : null}
-                                        <div
-                                            className="kanit-regular text-md text-justify overflow-hidden line-clamp-[12]"
-                                            dangerouslySetInnerHTML={{ __html: post.content || "" }}
-                                        />
+                                        <div                      className={post.image ? "kanit-regular text-lg text-justify overflow-hidden line-clamp-[5]" : "kanit-regular text-lg text-justify overflow-hidden line-clamp-[12]"}                      dangerouslySetInnerHTML={{ __html: post.content || "" }}                    />
                                     </CardBody>
 
-                                    {/* Bottom-right button */}
-                                    <CardFooter className="pt-0 justify-end">
-                                        <Button
-                                            color="primary"
-                                            radius="full"
-                                            onPress={() => openPostModal(post)}
-                                        >
+                                    <CardFooter className="pt-2 justify-end">
+                                        <Button color="primary" radius="full" onPress={() => openPostModal(post)}>
                                             Megnyitás
                                         </Button>
                                     </CardFooter>
@@ -258,13 +254,10 @@ export default function NewsPage() {
                     ))
                 )}
             </div>
-            <SitePostModal
-                post={selectedPostForModal}
-                isOpen={isModalOpen}
-                onClose={closeSitePostModal}
-            />
+
+            <SitePostModal        post={selectedPostForModal}        isOpen={isModalOpen}        onClose={closeSitePostModal}      />
+
             <div ref={loaderRef} className="h-10"></div>
         </>
-    )
-        ;
+    );
 }

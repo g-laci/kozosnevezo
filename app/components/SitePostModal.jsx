@@ -36,28 +36,27 @@ export default function SitePostModal({post, isOpen, onClose, sanitizeHtml}) {
             <ModalContent>
                 {(modalOnClose) => (
                     <>
-                        <ModalHeader className="flex flex-col gap-1">
+                        <ModalHeader className="flex flex-col gap-1 text-2xl">
                             {selectedPost?.title || "Bejegyzés"}
                         </ModalHeader>
 
                         <ModalBody>
+                            <div className="flex flex-col gap-4">
                             {selectedPost?.image ? (
-                                <div className="p-3 h-1/2 flex items-center justify-center ">
-                                    {post.image ? (
-                                        <Image
-                                            removeWrapper
-                                            src={post.image}
-                                            alt={post.title || "Post image"}
-                                            className="w-full h-full object-cover"
-                                        />
-                                    ) : null}
+                                <div className="flex justify-center">
+                                    <Image
+                                        src={selectedPost?.image}
+                                        alt={selectedPost?.title || "Post image"}
+                                        className="max-h-[40vh] w-auto object-contain"
+                                    />
                                 </div>
                             ) : null}
 
                             <article
-                                className="prose prose-sm max-w-none sm:prose"
+                                className="text-lg"
                                 dangerouslySetInnerHTML={{__html: safeHtml}}
                             />
+                            </div>
                         </ModalBody>
 
                         <ModalFooter>

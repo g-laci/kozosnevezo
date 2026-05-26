@@ -202,7 +202,7 @@ export default function NewsPage() {
                         </div>)}*/}
                 </div>
                 <h1 className="hidden sm:block m-5 title w-2/6 text-center">Hírek</h1>
-                {isLoaded && user && user.publicMetadata.role === "admin" ? (
+                {/*{isLoaded && user && user.publicMetadata.role === "admin" ? (
                         <div className="hidden sm:block w-2/6 text-right self-end mb-4">
                             <Button color="primary" radius="full" variant="ghost"
                                     onPress={onOpen} startContent={<BiMailSend size="1.5em"/>}>
@@ -210,7 +210,7 @@ export default function NewsPage() {
                             </Button>
                         </div>) :
                     <div className="w-2/6"></div>
-                }
+                }*/}
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-4 w-11/12 gap-4 mb-4">
                 {isFeedLoading ? (

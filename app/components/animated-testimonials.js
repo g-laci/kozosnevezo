@@ -32,7 +32,7 @@ export const AnimatedTestimonials = ({
     const rotationValues = [7, -5, 3, -8, 2];
 
     return (
-        <div className=" mx-auto sm:mr-[5%] antialiased font-sans px-4 md:px-8 lg:px-12 ">
+        <div className=" mx-auto sm:mr-[5%] antialiased font-sans px-4 md:px-8 lg:px-12 mt-20">
             <div className=" grid grid-cols-1 md:grid-cols-2 gap-10">
 
                 <div className=" relative h-80 w-80 justify-self-center sm:justify-self-end">
@@ -115,9 +115,6 @@ export const AnimatedTestimonials = ({
                         <h3 className="text-2xl font-bold dark:text-white text-black">
                             {testimonials[active].name}
                         </h3>
-                        <p className="text-sm text-gray-600 dark:text-neutral-500">
-                            {testimonials[active].designation}
-                        </p>
                         <motion.p className="text-lg text-gray-800 mt-5 dark:text-neutral-300">
                             {testimonials[active].quote.split(" ").map((word, index) => (
                                 <motion.span

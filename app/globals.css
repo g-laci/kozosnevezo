@@ -8,9 +8,7 @@ html, body {
   font-family: 'Inter', 'Kanit', Arial, Helvetica, sans-serif;
 }
 
-.h-screen-minus-navbar-desktop {
-  height: calc(100vh - 104px);
-}
+
 
 .h-screen-minus-navbar-mobile {
   height: calc(100vh - 190px);

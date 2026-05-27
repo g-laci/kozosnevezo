@@ -68,7 +68,7 @@ export default function Footer() {
                 <motion.div
                     whileHover={{scale: 1.1}}
                     whileTap={{scale: 0.9, borderRadius: "100%"}}
-                    onClick={() => window.open('mailto:kozosnevezo@outlook.com', '_blank')}
+                    onClick={() => window.open('mailto:kozosnevezoegyesulet@gmail.com', '_blank')}
                     className="cursor-pointer"
                 >
                     <RiMailFill size="35px" className="fill-blue-900"/>
@@ -131,7 +131,7 @@ export default function Footer() {
                 <motion.div
                     whileHover={{scale: 1.1}}
                     whileTap={{scale: 0.9, borderRadius: "100%"}}
-                    onClick={() => window.open('mailto:kozosnevezo@outlook.com', '_blank')}
+                    onClick={() => window.open('mailto:kozosnevezoegyesulet@gmail.com', '_blank')}
                     className="cursor-pointer"
                 >
                     <RiMailFill size="35px" className="fill-blue-900"/>

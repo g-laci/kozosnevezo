@@ -91,12 +91,12 @@ export const InfiniteMovingCards = ({
                                         className="float-left mr-4 h-20 w-20 shrink-0 rounded-full object-cover border border-zinc-300 dark:border-zinc-600"
                                     />
                                 ) : null}
-                                <div className="relative z-20 mb-2">
-                  <span className="text-md font-semibold leading-[1.6] text-neutral-700 dark:text-gray-200">
+                                <div className="relative z-20">
+                  <span className="text-md font-semibold leading-[1] text-neutral-700 dark:text-gray-200">
                     {item.name}
                   </span>
                                 </div>
-                                <div className="relative z-20 text-sm leading-[1.7] font-normal text-neutral-800 dark:text-gray-100">
+                                <div className="relative z-20 text-sm leading-[1.6] font-normal text-justify text-neutral-800 dark:text-gray-100">
                                     {item.quote}
                                 </div>
                             </blockquote>

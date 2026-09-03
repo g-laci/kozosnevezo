@@ -2,7 +2,7 @@
 
 import { InfiniteMovingCards } from "@/app/components/infinite-moving-cards";
 
-const testimonials = [
+const testimonials_top = [
     {
         quote: "Bár kicsit izgultam az utazás előtt, hogy minden rendben fog-e menni, de végül hatalmas élmény volt ez az egy hét Lengyelországban: a szervezők is nagyon segítőkészek voltak, és egy nagyon jó csapatot ismertem meg, mind Magyarországról, mind a külföldi országokból.",
         name: "Réka",
@@ -39,6 +39,9 @@ const testimonials = [
         name: "Dorina",
         image: "perger_dorina.jpg"
     },
+]
+
+const testimonials_bottom = [
     {
         quote: "Az erasmus+ számomra olyan felejthetetlen élményt adott, ami által nem csak nemzetközi és hazai barátságokra tehettem szert, hanem számos, remek, új dolgokra is. Kiváló lehetőséget adott a nyelvtanulásra, az izgalmas workshopok által pedig játékosan tanultunk különböző témákról amiket úgy gondolom, hogy a mindennapokban is hasznosítani tudunk.",
         name: "Fanni",
@@ -75,14 +78,14 @@ export default function TestimonialsSection() {
     return (
         <div className="flex flex-col items-center pb-[110px] sm:pb-[24px] responsive-height">
         <InfiniteMovingCards
-                items={testimonials}
+                items={testimonials_top}
                 direction="left"
                 speed="slow"
                 pauseOnHover={true}
                 className="justify-start"
             />
             <InfiniteMovingCards
-                items={testimonials}
+                items={testimonials_bottom}
                 direction="right"
                 speed="slow"
                 pauseOnHover={true}

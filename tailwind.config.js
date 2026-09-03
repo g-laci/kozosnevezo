@@ -3,74 +3,84 @@ const {heroui} = require("@heroui/react");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
-  theme: {
-  	extend: {
-  		borderRadius: {
-  			lg: 'var(--radius)',
-  			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
-  		},
-  		colors: {}
-  	}
-  },
-  darkMode: ["class", "class"],
-  plugins: [heroui({
-    themes: {
-      "kozos-nevezo": {
-        extend: "light", // <- inherit default values from dark theme
-        colors: {
-          background: "#F2F2F2",
-          foreground: "#000",
-          primary: {
-            50: "#00091a",
-            100: "#001a4d",
-            200: "#002b80",
-            300: "#003cb3",
-            400: "#004de6",
-            500: "#1a66ff",
-            600: "#4d88ff",
-            700: "#80aaff",
-            800: "#b3ccff",
-            900: "#e5eeff",
-            DEFAULT: "#003399",
-            foreground: "#ffffff",
-          },
-          secondary: {
-            50: "#1a0000",
-            100: "#4d0000",
-            200: "#800000",
-            300: "#b30000",
-            400: "#e60000",
-            500: "#ff1a1a",
-            600: "#ff4d4d",
-            700: "#ff8080",
-            800: "#ffb3b3",
-            900: "#ffe5e5",
-            DEFAULT: "#db0000",
-            foreground: "#ffffff",
-          },
-          focus: "#ff4d82",
-        },
-        layout: {
-          disabledOpacity: "0.3",
-          radius: {
-            small: "4px",
-            medium: "6px",
-            large: "8px",
-          },
-          borderWidth: {
-            small: "1px",
-            medium: "2px",
-            large: "3px",
-          },
-        },
-      },
+    content: [
+        "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
+        "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    ],
+    theme: {
+        extend: {
+            borderRadius: {
+                lg: 'var(--radius)',
+                md: 'calc(var(--radius) - 2px)',
+                sm: 'calc(var(--radius) - 4px)'
+            },
+            colors: {},
+            animation: {
+                scroll: 'scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite',
+            },
+            keyframes: {
+                scroll: {
+                    to: {
+                        transform: 'translate(calc(-50% - 0.5rem))',
+                    },
+                },
+            },
+        }
     },
-  }),
-      require("tailwindcss-animate")
-],
+    darkMode: ["class", "class"],
+    plugins: [heroui({
+        themes: {
+            "kozos-nevezo": {
+                extend: "light", // <- inherit default values from dark theme
+                colors: {
+                    background: "#F2F2F2",
+                    foreground: "#000",
+                    primary: {
+                        50: "#00091a",
+                        100: "#001a4d",
+                        200: "#002b80",
+                        300: "#003cb3",
+                        400: "#004de6",
+                        500: "#1a66ff",
+                        600: "#4d88ff",
+                        700: "#80aaff",
+                        800: "#b3ccff",
+                        900: "#e5eeff",
+                        DEFAULT: "#003399",
+                        foreground: "#ffffff",
+                    },
+                    secondary: {
+                        50: "#1a0000",
+                        100: "#4d0000",
+                        200: "#800000",
+                        300: "#b30000",
+                        400: "#e60000",
+                        500: "#ff1a1a",
+                        600: "#ff4d4d",
+                        700: "#ff8080",
+                        800: "#ffb3b3",
+                        900: "#ffe5e5",
+                        DEFAULT: "#db0000",
+                        foreground: "#ffffff",
+                    },
+                    focus: "#ff4d82",
+                },
+                layout: {
+                    disabledOpacity: "0.3",
+                    radius: {
+                        small: "4px",
+                        medium: "6px",
+                        large: "8px",
+                    },
+                    borderWidth: {
+                        small: "1px",
+                        medium: "2px",
+                        large: "3px",
+                    },
+                },
+            },
+        },
+    }),
+        require("tailwindcss-animate")
+    ],
 };

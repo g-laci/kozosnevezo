@@ -63,7 +63,7 @@ export const InfiniteMovingCards = ({
         <div
             ref={containerRef}
             className={cn(
-                "scroller relative py-8 z-20 max-w-[100vw] overflow-hidden rounded-2xl [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
+                "scroller relative pb-8 z-20 max-w-[100vw] overflow-hidden rounded-2xl [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
                 className
             )}
         >
@@ -81,14 +81,14 @@ export const InfiniteMovingCards = ({
                     return (
                         <li
                             key={item.name ?? index}
-                            className="relative overflow-visible shadow-xl max-h-[40vh] max-w-full shrink-0 rounded-2xl border border-zinc-200 bg-[linear-gradient(180deg,#fafafa,#f5f5f5)] px-8 py-6 md:w-[450px] dark:border-zinc-700 dark:bg-[linear-gradient(180deg,#27272a,#18181b)]"
+                            className="relative overflow-visible shadow-xl max-h-[35vh] md:max-h-[40vh] max-w-[80vw] md:max-w-full shrink-0 rounded-2xl border border-zinc-200 bg-[linear-gradient(180deg,#fafafa,#f5f5f5)] px-8 py-6 md:w-[450px] dark:border-zinc-700 dark:bg-[linear-gradient(180deg,#27272a,#18181b)]"
                         >
                             <blockquote>
                                 {imgSrc ? (
                                     <img
                                         src={imgSrc}
                                         alt={item.name ? `${item.name} profile` : "profile"}
-                                        className="float-left mr-4 h-20 w-20 shrink-0 rounded-full object-cover border border-zinc-300 dark:border-zinc-600"
+                                        className="float-left mr-4 h-16 md:h-20 w-16 md:w-20 shrink-0 rounded-full object-cover border border-zinc-300 dark:border-zinc-600"
                                     />
                                 ) : null}
                                 <div className="relative z-20">
@@ -96,7 +96,7 @@ export const InfiniteMovingCards = ({
                     {item.name}
                   </span>
                                 </div>
-                                <div className="relative z-20 text-sm leading-[1.6] font-normal text-justify text-neutral-800 dark:text-gray-100">
+                                <div className="relative z-20 text-xs md:text-sm leading-[1.4] md:leading-[1.6] font-normal text-justify text-neutral-800 dark:text-gray-100">
                                     {item.quote}
                                 </div>
                             </blockquote>

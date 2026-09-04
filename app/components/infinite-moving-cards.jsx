@@ -1,7 +1,8 @@
 "use client";
 
-import { cn } from "../lib/utils";
-import React, { useEffect, useState } from "react";
+import {cn} from "../lib/utils";
+import React, {useEffect, useState} from "react";
+import {Spinner} from "@heroui/react";
 
 export const InfiniteMovingCards = ({
                                         items,
@@ -65,6 +66,7 @@ export const InfiniteMovingCards = ({
     const handleTouchStart = () => pauseOnHover && setIsHovering(true);
     const handleTouchEnd = () => setIsHovering(false);
 
+    // return block: always mount the container and ul, but hide ul until start === true
     return (
         <div
             ref={containerRef}
@@ -77,15 +79,23 @@ export const InfiniteMovingCards = ({
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
         >
+
+            {!start && (
+                <div className="flex items-center justify-center py-8">
+                    <Spinner />
+                </div>
+            )}
+
             <ul
                 ref={scrollerRef}
                 className={cn(
                     "flex w-max min-w-full shrink-0 items-center flex-nowrap gap-4",
                     start && "animate-scroll",
-                    isHovering && "[animation-play-state:paused]"
+                    isHovering && "[animation-play-state:paused]",
+                    !start && "hidden" // <-- hides the UL visually until addAnimation sets start
                 )}
             >
-                {items.map((item, index) => {
+                {(items || []).map((item, index) => {
                     const imgSrc = item.image || imagePath || null;
 
                     return (
@@ -102,9 +112,9 @@ export const InfiniteMovingCards = ({
                                     />
                                 ) : null}
                                 <div className="relative z-20">
-                  <span className="text-md font-semibold leading-[1] text-neutral-700 dark:text-gray-200">
-                    {item.name}
-                  </span>
+                                <span className="text-md font-semibold leading-[1] text-neutral-700 dark:text-gray-200">
+                                    {item.name}
+                                </span>
                                 </div>
                                 <div className="relative z-20 text-xs md:text-sm leading-[1.4] md:leading-[1.6] font-normal text-justify text-neutral-800 dark:text-gray-100">
                                     {item.quote}

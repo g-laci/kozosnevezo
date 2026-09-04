@@ -9,10 +9,11 @@ export const InfiniteMovingCards = ({
                                         speed = "fast",
                                         pauseOnHover = true,
                                         className,
-                                        imagePath, // optional fallback image path
+                                        imagePath,
                                     }) => {
     const containerRef = React.useRef(null);
     const scrollerRef = React.useRef(null);
+    const [isHovering, setIsHovering] = useState(false);
 
     useEffect(() => {
         addAnimation();
@@ -59,20 +60,29 @@ export const InfiniteMovingCards = ({
         }
     };
 
+    const handleMouseEnter = () => pauseOnHover && setIsHovering(true);
+    const handleMouseLeave = () => setIsHovering(false);
+    const handleTouchStart = () => pauseOnHover && setIsHovering(true);
+    const handleTouchEnd = () => setIsHovering(false);
+
     return (
         <div
             ref={containerRef}
             className={cn(
-                "scroller relative pb-8 z-20 max-w-[100vw] overflow-hidden rounded-2xl [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
+                "scroller select-none md:select-text relative pb-4 md:pb-8 z-20 max-w-[100vw] overflow-hidden rounded-2xl [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
                 className
             )}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
         >
             <ul
                 ref={scrollerRef}
                 className={cn(
                     "flex w-max min-w-full shrink-0 items-center flex-nowrap gap-4",
                     start && "animate-scroll",
-                    pauseOnHover && "hover:[animation-play-state:paused]"
+                    isHovering && "[animation-play-state:paused]"
                 )}
             >
                 {items.map((item, index) => {
@@ -81,14 +91,14 @@ export const InfiniteMovingCards = ({
                     return (
                         <li
                             key={item.name ?? index}
-                            className="relative overflow-visible shadow-xl max-h-[35vh] md:max-h-[40vh] max-w-[80vw] md:max-w-full shrink-0 rounded-2xl border border-zinc-200 bg-[linear-gradient(180deg,#fafafa,#f5f5f5)] px-8 py-6 md:w-[450px] dark:border-zinc-700 dark:bg-[linear-gradient(180deg,#27272a,#18181b)]"
+                            className="relative overflow-visible shadow-md md:shadow-xl max-h-[35vh] md:max-h-[40vh] max-w-[80vw] md:max-w-full shrink-0 rounded-2xl border border-zinc-200 bg-[linear-gradient(180deg,#fafafa,#f5f5f5)] px-8 py-6 md:w-[450px] dark:border-zinc-700 dark:bg-[linear-gradient(180deg,#27272a,#18181b)]"
                         >
                             <blockquote>
                                 {imgSrc ? (
                                     <img
                                         src={imgSrc}
                                         alt={item.name ? `${item.name} profile` : "profile"}
-                                        className="float-left mr-4 h-16 md:h-20 w-16 md:w-20 shrink-0 rounded-full object-cover border border-zinc-300 dark:border-zinc-600"
+                                        className="select-none float-left mr-4 h-16 md:h-20 w-16 md:w-20 shrink-0 rounded-full object-cover border border-zinc-300 dark:border-zinc-600"
                                     />
                                 ) : null}
                                 <div className="relative z-20">

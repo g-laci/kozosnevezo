@@ -1,6 +1,6 @@
 "use client";
 
-import { InfiniteMovingCards } from "@/app/components/infinite-moving-cards";
+import {InfiniteMovingCards} from "@/app/components/infinite-moving-cards";
 
 const testimonials_top = [
     {
@@ -76,21 +76,23 @@ const testimonials_bottom = [
 
 export default function TestimonialsSection() {
     return (
-        <div className="flex flex-col items-center pb-[110px] sm:pb-[24px] responsive-height">
-        <InfiniteMovingCards
-                items={testimonials_top}
-                direction="left"
-                speed="slow"
-                pauseOnHover={true}
-                className="justify-start"
-            />
-            <InfiniteMovingCards
-                items={testimonials_bottom}
-                direction="right"
-                speed="slow"
-                pauseOnHover={true}
-                className="justify-start"
-            />
+        <div className="flex flex-col justify-center  sm:pb-[24px] responsive-height">
+            <div className="flex flex-col xl:gap-12">
+                <InfiniteMovingCards
+                    items={testimonials_top}
+                    direction="left"
+                    speed="slow"
+                    pauseOnHover={true}
+                    className="justify-start"
+                />
+                <InfiniteMovingCards
+                    items={testimonials_bottom}
+                    direction="right"
+                    speed="slow"
+                    pauseOnHover={true}
+                    className="justify-start"
+                />
+            </div>
         </div>
     );
 }

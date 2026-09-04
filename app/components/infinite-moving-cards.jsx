@@ -1,7 +1,7 @@
 "use client";
 
 import {cn} from "../lib/utils";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useMemo} from "react";
 import {Spinner} from "@heroui/react";
 
 export const InfiniteMovingCards = ({
@@ -21,6 +21,16 @@ export const InfiniteMovingCards = ({
     }, []);
 
     const [start, setStart] = useState(false);
+
+    function shuffleArray(array) {
+        const shuffled = [...array];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+    }
+    const shuffledItems = useMemo(() => shuffleArray(items || []), [items])
 
     function addAnimation() {
         if (containerRef.current && scrollerRef.current) {
@@ -66,7 +76,6 @@ export const InfiniteMovingCards = ({
     const handleTouchStart = () => pauseOnHover && setIsHovering(true);
     const handleTouchEnd = () => setIsHovering(false);
 
-    // return block: always mount the container and ul, but hide ul until start === true
     return (
         <div
             ref={containerRef}
@@ -95,7 +104,7 @@ export const InfiniteMovingCards = ({
                     !start && "hidden" // <-- hides the UL visually until addAnimation sets start
                 )}
             >
-                {(items || []).map((item, index) => {
+                {shuffledItems.map((item, index) => {
                     const imgSrc = item.image || imagePath || null;
 
                     return (
